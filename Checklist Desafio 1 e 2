@@ -1,0 +1,104 @@
+-- Instalando Oracle 19c
+
+S.O: Oracle Linux 7.9
+Oracle: 19.3.0.0
+
+- desabilitando firewall
+
+systemctl stop firewalld
+systemctl disable firewalld
+
+
+- validando a configuração do hosts 
+
+cat /etc/hosts
+192.168.1.78  oracle19c.localdomain  oracle19c
+
+-- instalando pacote preinstall
+
+yum search preinstall
+yum install oracle-database-preinstall-19c.x86_64
+yum -y install oracle-database-preinstall-19c
+
+
+- criando grupos e ajustando user oracle
+
+useradd oracle 
+Obs: caso não tenha criado na instalação do S.O
+
+id oracle 
+
+groupadd oinstall
+groupadd dba
+groupadd oper
+groupadd backupdba
+groupadd dgdba
+groupadd kmdba
+groupadd racdba
+usermod -g oinstall -G dba,oper,backupdba,dgdba,kmdba,racdba oracle
+
+passwd oracle 
+
+
+- configurando diretorios
+
+mkdir -p /u01/app/oracle/product/19.3.0.0/dbhome_1
+chown -R oracle:oinstall /u01 
+
+-- mover o instalador para o diretório criado:
+mv LINUX.X64_193000_db_home.zip /u01/app/oracle/product/19.3.0.0/dbhome_1
+
+-- mudar permissão:
+cd /u01/app/oracle/product/19.3.0.0/dbhome_1
+chown oracle.oinstall LINUX.X64_193000_db_home.zip
+
+-- mover variáveis de ambiente:
+mv oraenv.sh /home/oracle/
+cd /home/oracle/
+chown oracle.oinstall oraenv.sh
+
+-- entrar como oracle:
+su - oracle
+chmod +x oraenv.sh
+
+-- descompactar no diretorio criado anteriomente
+cd /u01/app/oracle/product/19.3.0.0/dbhome_1
+unzip LINUX.X64_193000_db_home.zip
+
+-- roda as variáveis de ambiente:
+. oraenv.sh
+cd /u01/app/oracle/product/19.3.0.0/dbhome_1
+./runInstaller
+
+--ver imagens
+
+--SGBD instalado e operacional
+
+--Criar o listener e o banco:
+. oraenv.sh
+netca
+ver imagens
+--Pós isso roda o status:
+lsnrctl status
+
+--Instala o banco
+. oraenv.sh
+dbca
+ver imagens
+orcl2
+
+--valida
+. oraenv.sh
+lsnrctl status
+ver instância e pdb
+
+--loga no banco:
+sqlplus / as sysdba
+
+select instance_name, status from v$instance;
+show pdbs;
+
+
+
+
+
