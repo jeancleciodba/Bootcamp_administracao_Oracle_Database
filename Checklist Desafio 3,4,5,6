@@ -1,0 +1,42 @@
+--OMF Habilitado:
+alter session set container=orclpdb;
+
+SQL> SHOW PARAMETER DB_CREATE_FILE_DEST;
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+db_create_file_dest                  string      /u01/app/oracle/oradata
+SQL>
+
+SELECT tablespace_name, bigfile, status
+FROM user_tablespaces;
+
+3. Criar um Bigfile Tablespace chamado BIGTBS (OMF habilitado)
+
+-----------------------------------
+CREATE BIGFILE TABLESPACE BIGTBS 
+DATAFILE SIZE 100M AUTOEXTEND ON NEXT 50M;
+-----------------------------------
+
+3. Criar um Tablespace Temporário chamado TEMP2
+-----------------------------------
+CREATE TEMPORARY TABLESPACE TEMP2;
+-----------------------------------
+
+5.Criar o Schema DBAOCM e Definir as Tablespaces Default e Temporária:
+-----------------------------------
+CREATE USER DBAOCM IDENTIFIED BY senha
+  DEFAULT TABLESPACE BIGTBS
+  TEMPORARY TABLESPACE TEMP2;
+-----------------------------------
+
+--6. Criar tabela XPTO
+connect dbaocm/senha@orclpdb
+
+CREATE TABLE XPTO (C1 NUMBER);
+
+INSERT INTO XPTO VALUES (1);
+COMMIT;
+
+
+
