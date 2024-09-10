@@ -8,5 +8,4 @@ Checklist Desafio – Bootcamp DBA Oracle Junior
 7. Fazer um backup lógico do schema DBAOCM
 8. Fazer drop user DBAOCM com todos os seus objetos
 9. Restaurar backup lógico do schema DBAOCM
-10. Enviar email para contato@dbaocm.com com evidencias e logs
-Subject | Desafio Bootcamp DBA Junior
+
