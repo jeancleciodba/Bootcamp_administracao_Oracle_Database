@@ -1,0 +1,31 @@
+//Fizemos umas configurações adicionais para que possamos fazer conexões externas ao nosso banco de dados:
+
+--Só conferi, mas não ajustei nada:
+vi $ORACLE_HOME/network/admin/listener.ora
+--Aqui ajustei o nome do LISTENER, modifiquei o LISTENER_ORCL2 para LISTENER e acrescentei o ORCLPDB:
+vi $ORACLE_HOME/network/admin/tnsnames.ora
+
+sqlplus / as sysdba
+
+SQL> show parameter local
+
+
+SQL> alter system set local_listener='LISTENER';
+
+SQL> exit
+
+lsnrctl stop
+
+lsnrctl start
+
+sqlplus / as sysdba
+
+alter system register;
+
+SQL> exit
+
+lsnrctl status
+
+orcl2.localdomain (CDB)
+
+orclpdb.localdomain (PDB)
