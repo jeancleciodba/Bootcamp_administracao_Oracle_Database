@@ -1,0 +1,32 @@
+-- CRIANDO O DIRETORIOS:
+
+mkdir /home/oracle/dpump
+
+sqlplus system/senha@orclpdb
+
+CREATE DIRECTORY dump_dir AS '/home/oracle/dpump';
+--Não dei grant pois o system já é dono do diretório
+
+7. Comando exportação prompt do Oracle:
+
+$ expdp system/senha@orclpdb dumpfile=expdp_schema_dbaocm.dmp logfile=expdp_schema_dbaocm.log schemas=dbaocm exclude=statistics directory=dump_dir
+
+8. Simulação da perca do schema:
+
+$ sqlplus system/senha@orclpdb
+
+SQL> DROP USER dbaocm CASCADE;
+
+select * from dbaocm.xpto;
+
+9. Recuperação do schema:
+
+$ impdp system/senha@orclpdb dumpfile=expdp_schema_dbaocm.dmp logfile=impdp_schema_dbaocm.log directory=dump_dir
+
+
+$ sqlplus system/senha@orclpdb
+
+select * from dbaocm.xpto;
+
+
+
